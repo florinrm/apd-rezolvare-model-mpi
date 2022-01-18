@@ -111,6 +111,11 @@ int main(int argc, char * argv[]) {
             MPI_Send(&len, 1, MPI_INT, MAPPER_3, 0, MPI_COMM_WORLD);
             MPI_Send(lines[i], len, MPI_CHAR, MAPPER_3, 0, MPI_COMM_WORLD);
         }
+
+        for (int i = 0; i < no_lines; i++) {
+            free(lines[i]);
+        }
+        free(lines);
     } else if (rank == MAPPER_1) {
         int chunk_size;
         MPI_Recv(&chunk_size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -143,6 +148,11 @@ int main(int argc, char * argv[]) {
 
         MPI_Send(&vowels, 1, MPI_INT, REDUCER_1, 0, MPI_COMM_WORLD);
         MPI_Send(&consonants, 1, MPI_INT, REDUCER_2, 0, MPI_COMM_WORLD);
+
+        for (int i = 0; i < chunk_size; i++) {
+            free(lines[i]);
+        }
+        free(lines);
     } else if (rank == MAPPER_2) {
         int chunk_size;
         MPI_Recv(&chunk_size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -175,6 +185,11 @@ int main(int argc, char * argv[]) {
 
         MPI_Send(&vowels, 1, MPI_INT, REDUCER_1, 0, MPI_COMM_WORLD);
         MPI_Send(&consonants, 1, MPI_INT, REDUCER_2, 0, MPI_COMM_WORLD);
+
+        for (int i = 0; i < chunk_size; i++) {
+            free(lines[i]);
+        }
+        free(lines);
     } else if (rank == MAPPER_3) {
         int chunk_size;
         MPI_Recv(&chunk_size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -207,6 +222,11 @@ int main(int argc, char * argv[]) {
         
         MPI_Send(&vowels, 1, MPI_INT, REDUCER_1, 0, MPI_COMM_WORLD);
         MPI_Send(&consonants, 1, MPI_INT, REDUCER_2, 0, MPI_COMM_WORLD);
+
+        for (int i = 0; i < chunk_size; i++) {
+            free(lines[i]);
+        }
+        free(lines);
     } else if (rank == REDUCER_1) {
         int v1, v2, v3;
         MPI_Recv(&v1, 1, MPI_INT, MAPPER_1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
